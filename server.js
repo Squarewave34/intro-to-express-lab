@@ -30,6 +30,9 @@ app.get('/roll/:number', (req, res)=>{
 
 // 3. I Want THAT One!
 // Create a route for URLs like /collectibles/<index-parameter>
+// Should describe the item at the given index, like “So, you want the shiny ball? For 5.95,
+// it can be yours!” Include both the name and price properties.
+
 const collectibles = [
   { name: 'shiny ball', price: 5.95 },
   { name: 'autographed picture of a dog', price: 10 },
@@ -49,6 +52,103 @@ app.get('/collectibles/:index', (req, res)=>{
   }
 })
 
+
+// Task: Create a route /shoes that filters the list of shoes based on query parameters.
+
+// Query Parameters:
+
+// min-price: Excludes shoes below this price.
+// max-price: Excludes shoes above this price.
+// type: Shows only shoes of the specified type.
+// No parameters: Responds with the full list of shoes.
+
+const shoes = [
+  { name: "Birkenstocks", price: 50, type: "sandal" },
+  { name: "Air Jordans", price: 500, type: "sneaker" },
+  { name: "Air Mahomeses", price: 501, type: "sneaker" },
+  { name: "Utility Boots", price: 20, type: "boot" },
+  { name: "Velcro Sandals", price: 15, type: "sandal" },
+  { name: "Jet Boots", price: 1000, type: "boot" },
+  { name: "Fifty-Inch Heels", price: 175, type: "heel" }
+];
+
+
+app.get('/shoes', (req, res) => {
+
+  // if(req.query.minPrice){
+    
+  //   let filteredShoes = shoes.filter((shoe)=>{
+  //     return shoe.price>req.query.minPrice 
+  //   })
+
+  //   let shoesToSend = filteredShoes.map((shoe)=>{
+  //     return `a(n) ${shoe.name}, that costs ${shoe.price}, and it's type is ${shoe.type}`
+  //   })
+
+  //   res.send(shoesToSend)
+
+  // }
+
+  // else if(req.query.maxPrice){
+
+  //   let filteredShoes = shoes.filter((shoe)=>{
+  //     return shoe.price<req.query.maxPrice 
+  //   })
+
+  //   let shoesToSend = filteredShoes.map((shoe)=>{
+  //     return `a(n) ${shoe.name}, that costs ${shoe.price}, and it's type is ${shoe.type}`
+  //   })
+
+  //   res.send(shoesToSend)
+
+  // }
+
+  // else if(req.query.type){
+  //   let filteredShoes = shoes.filter((shoe)=>{
+  //     return shoe.type===req.query.type 
+  //   })
+
+  //   let shoesToSend = filteredShoes.map((shoe)=>{
+  //     return `a(n) ${shoe.name}, that costs ${shoe.price}, and it's type is ${shoe.type}`
+  //   })
+
+  //   res.send(shoesToSend)
+  // }
+
+  // else{
+  //   let shoesToSend = shoes.map((shoe)=>{
+  //     return `a(n) ${shoe.name}, that costs ${shoe.price}, and it's type is ${shoe.type}`
+  //   })
+
+  //   res.send(shoesToSend)
+  // }
+
+  let shoesToSend = shoes
+
+  if(req.query.minPrice){
+    shoesToSend = shoesToSend.filter((shoe)=>{
+      return shoe.price>req.query.minPrice
+    })
+  }
+
+  if(req.query.maxPrice){
+    shoesToSend = shoesToSend.filter((shoe)=>{
+      return shoe.price<req.query.maxPrice
+    })
+  }
+
+  if(req.query.type){
+    shoesToSend = shoesToSend.filter((shoe)=>{
+      return shoe.type===req.query.type
+    })
+  }
+
+  shoesToSend = shoesToSend.map((shoe)=>{
+    return `${shoe.name} that cost ${shoe.price} of type ${shoe.type}`
+  })
+
+  res.send(shoesToSend)
+})
 
 app.listen(3000, () => {
   console.log('listening on port: 3000');
